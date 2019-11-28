@@ -69,13 +69,29 @@ app.route("/articles/:articleTitle")
   });
 })
 .put(function(req,res){
-   Article.updateOne(
+   Article.update(
      {title:req.params.articleTitle},
      {title:req.body.title, content:req.body.content},
+     {overwrite:true},
      function(err){
        if(err){
          console.log(err);
        }else{res.send("no errori");}
+
+   });
+
+}).patch(function(req,res){
+
+   Article.update({title:req.params.articleTitle},
+           {$set:req.body},
+           function(err){
+             if(!err){res.send("succesfully patched up article document !!");}
+           });
+}).delete(function(req,res){
+   Article.deleteOne({title:req.params.articleTitle},function(err){
+       if(!err){
+            res.send("successfully deleted the given Item !!");  
+          }
 
    });
 
